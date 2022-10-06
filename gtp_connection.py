@@ -61,6 +61,7 @@ class GtpConnection:
             "gogui-rules_legal_moves": self.gogui_rules_legal_moves_cmd,
             "gogui-rules_final_result": self.gogui_rules_final_result_cmd,
             "solve": self.solve_cmd
+            "timelimit": self.timelimit_cmd
         }
 
         # argmap is used for argument checking
@@ -352,16 +353,29 @@ class GtpConnection:
         # change this method to use your solver
         board_color = args[0].lower()
         color = color_to_int(board_color)
-        move = self.go_engine.get_move(self.board, color)
-        if move is None:
-            self.respond('unknown')
+        # TODO: get best move from solver and use play_cmd play move 
+        # get best move from solver
+        # best_move = self.solve(self.board, color)
+
+        # Not solve in time limit play random move
+        if best_move[1] is None:
+            move = self.go_engine.get_move(self.board, color)
+            move_coord = point_to_coord(move, self.board.size)
+            move_as_string = format_point(move_coord)
+            if self.board.is_legal(move, color):
+                self.board.play_move(move, color)
+                self.respond(move_as_string)
             return
-            
-        move_coord = point_to_coord(move, self.board.size)
-        move_as_string = format_point(move_coord)
-        if self.board.is_legal(move, color):
-            self.board.play_move(move, color)
-            self.respond(move_as_string)
+
+        # if toPlay is losing play random move
+        if best_move[0] != board_color:
+            move = self.go_engine.get_move(self.board, color)
+            move_coord = point_to_coord(move, self.board.size)
+            move_as_string = format_point(move_coord)
+            if self.board.is_legal(move, color):
+                self.board.play_move(move, color)
+                self.respond(move_as_string)
+
         else:
             self.respond("Illegal move: {}".format(move_as_string))
             
@@ -369,6 +383,16 @@ class GtpConnection:
     def solve_cmd(self, args: List[str]) -> None:
         # remove this respond and implement this method
         self.respond('Implement This for Assignment 2')
+
+    def timelimit_cmd(self, args):
+
+        # get the time limit if out of range set as defult
+        self.timelimit = 1
+        timelimit = int(args[0])
+        if timelimit >= 1 and timelimit <= 100:
+            self.timelimit = timelimit
+        self.respond('')
+
 
     """
     ==========================================================================
