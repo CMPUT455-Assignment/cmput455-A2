@@ -3,12 +3,19 @@ from board_base import GO_POINT
 
 
 class AlphaBetaForGo:
-    def __init__(self, board: GoBoard, color, possibleMoves: list[GO_POINT]):
-        self.boardInput = board
-        self.possibleMoves = possibleMoves
-        self.board = board
+    def __init__(self, board=None, color=None, possibleMoves=None):
+        self.boardInput: GoBoard = board
+        self.board: GoBoard = board
+        self.possibleMoves: list[GO_POINT] = possibleMoves
         self.color = color
+
         self.HastTable = {}
+
+    def re(self, board: GoBoard, color, possibleMoves: list[GO_POINT]):
+        self.boardInput: GoBoard = board
+        self.board: GoBoard = board
+        self.possibleMoves: list[GO_POINT] = possibleMoves
+        self.color = color
 
     def run(self, depthLeft=10) -> str:
         self.searcher(alpha=-999999, beta=999999, depthLeft=depthLeft)

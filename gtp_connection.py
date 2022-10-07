@@ -76,6 +76,8 @@ class GtpConnection:
             "play": (2, "Usage: play {b,w} MOVE"),
             "legal_moves": (1, "Usage: legal_moves {w,b}"),
         }
+        self.solver = AlphaBetaForGo()
+
 
     def write(self, data: str) -> None:
         stdout.write(data)
@@ -342,11 +344,9 @@ class GtpConnection:
             self.respond("Error: {}".format(str(e)))
 
     def solve(self, color) -> str:
-        alphabeta = AlphaBetaForGo(board=self.board, color=color, possibleMoves=GoBoardUtil.generate_legal_moves(self.board, color))
-        bestMove = alphabeta.run()
+        self.solver.re(board=self.board, color=color, possibleMoves=GoBoardUtil.generate_legal_moves(self.board, color))
+        bestMove = self.solver.run(depthLeft=10)
         return bestMove
-
-
 
     def genmove_cmd(self, args: List[str]) -> None:
         """ generate a move for color args[0] in {'b','w'} """
