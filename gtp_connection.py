@@ -9,6 +9,7 @@ in the Deep-Go project by Isaac Henrion and Amos Storkey
 at the University of Edinburgh.
 """
 import traceback
+from urllib import response
 import numpy as np
 import re
 from sys import stdin, stdout, stderr
@@ -374,15 +375,19 @@ class GtpConnection:
             else:
                 self.respond("Illegal move: {}".format(move_as_string))
 
-    def solve_cmd(self, color) -> str:
-        self.solver.re(board=self.board, color=color, possibleMoves=GoBoardUtil.generate_legal_moves(self.board, color))
+    def solve_cmd(self, args) -> str:
+        
+        self.solver.re(board=self.board, color=self.board.current_player, possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
         bestMove = self.solver.run(depthLeft=10)
-        return bestMove
+        self.respond('')
+        # bestMove = self.solver.run(depthLeft=10)
+        # return bestMove
 
     def timelimit_cmd(self, args):
         # get the time limit if out of range set as default
         self.timelimit = 1
         timelimit = int(args[0])
+        # print('timelimit')
         if 1 <= timelimit <= 100:
             self.timelimit = timelimit
         self.respond('')
