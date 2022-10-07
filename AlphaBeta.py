@@ -1,3 +1,5 @@
+import numpy as np
+
 from board import GoBoard
 from board_base import GO_POINT
 
@@ -18,7 +20,7 @@ class AlphaBetaForGo:
         self.color = color
 
     def run(self, depthLeft=10) -> str:
-        self.searcher(alpha=-999999, beta=999999, depthLeft=depthLeft)
+        self.searcher(alpha=-np.Inf, beta=np.Inf, depthLeft=depthLeft)
         scores = []
         for possibleMove in self.possibleMoves:
             scores.append(self.HastTable.get(possibleMove))
@@ -27,7 +29,7 @@ class AlphaBetaForGo:
         return self.possibleMoves[maxIndex]
 
     def searcher(self, alpha, beta, depthLeft) -> None | int:
-        bestScore = -9999999
+        bestScore = -np.Inf
         if depthLeft == 0:
             return
         for possibleMove in self.possibleMoves:
