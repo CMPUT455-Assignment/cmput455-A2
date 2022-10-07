@@ -4,8 +4,6 @@
     <list default="true" id="488ea38e-5f39-469d-a222-d674f6bf90a2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AlphaBeta.py" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaBeta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Go0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Go0.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/References/tic_tac_toe.py" beforeDir="false" afterPath="$PROJECT_DIR$/References/tic_tac_toe.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gtp_connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/gtp_connection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,9 +47,6 @@
       <module name="cmput455-A2" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -109,7 +104,7 @@
       <workItem from="1665101257425" duration="7485000" />
       <workItem from="1665120873411" duration="612000" />
       <workItem from="1665121567773" duration="990000" />
-      <workItem from="1665179278214" duration="1706000" />
+      <workItem from="1665179278214" duration="3754000" />
     </task>
     <servers />
   </component>
@@ -128,7 +123,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/cmput455_A2$Go0.coverage" NAME="Go0 Coverage Results" MODIFIED="1665183543898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/cmput455_A2$Go0.coverage" NAME="Go0 Coverage Results" MODIFIED="1665185052852" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/cmput455_A2$AlphaBeta.coverage" NAME="AlphaBeta Coverage Results" MODIFIED="1665183418754" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

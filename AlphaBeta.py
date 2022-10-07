@@ -13,13 +13,21 @@ class AlphaBetaForGo:
 
         self.HastTable = {}
 
+    """    
+    def re(self, GTP) -> None:
+        self.boardInput: GoBoard = GTP.board
+        self.board: GoBoard = self.board
+        self.possibleMoves: list[GO_POINT] = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
+        self.color = self.board.current_player
+    """
+
     def re(self, board, color, possibleMoves) -> None:
         self.boardInput: GoBoard = board
-        self.board: GoBoard = board
-        self.possibleMoves: list[GO_POINT] = possibleMoves
+        self.board: GoBoard = board.copy()
         self.color = color
+        self.possibleMoves: list[GO_POINT] = possibleMoves
 
-    def run(self, depthLeft=10) -> str:
+    def run(self, depthLeft=6) -> str:
         self.searcher(alpha=-np.Inf, beta=np.Inf, depthLeft=depthLeft)
         scores = []
         for possibleMove in self.possibleMoves:
@@ -30,16 +38,14 @@ class AlphaBetaForGo:
 
     def searcher(self, alpha, beta, depthLeft) -> None | int:
         bestScore = -np.Inf
-        if depthLeft == 0:
-            return
-        # ...
-        #   return
+        if (depthLeft == 0) or (len(self.possibleMoves) == 0):
+            return True
         for possibleMove in self.possibleMoves:
             try:
                 score = self.HastTable.get(possibleMove)
                 assert score is not None
-            except:
-                self.board[possibleMove] = self.color
+            except AssertionError:
+                self.board.play_move(possibleMove, self.color)
                 score = -self.searcher(-beta, -alpha, depthLeft - 1)
                 self.board = self.boardInput
             if score >= beta:

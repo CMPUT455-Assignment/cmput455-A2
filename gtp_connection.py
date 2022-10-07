@@ -375,12 +375,12 @@ class GtpConnection:
                 self.respond("Illegal move: {}".format(move_as_string))
 
     def solve_cmd(self, args) -> str:
-        
         self.solver.re(board=self.board, color=self.board.current_player, possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
-        bestMove = self.solver.run(depthLeft=10)
-        self.respond('')
+        #self.solver.re(self)
+        bestMove = self.solver.run(depthLeft=6)
+        self.respond(f'Best move:{bestMove}')
         # bestMove = self.solver.run(depthLeft=10)
-        # return bestMove
+        #return bestMove
 
     def timelimit_cmd(self, args):
         # get the time limit if out of range set as default
