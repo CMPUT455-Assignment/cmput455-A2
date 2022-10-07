@@ -13,7 +13,7 @@ class AlphaBetaForGo:
 
         self.HastTable = {}
 
-    def re(self, board: GoBoard, color, possibleMoves: list[GO_POINT]):
+    def re(self, board, color, possibleMoves):
         self.boardInput: GoBoard = board
         self.board: GoBoard = board
         self.possibleMoves: list[GO_POINT] = possibleMoves
@@ -32,6 +32,8 @@ class AlphaBetaForGo:
         bestScore = -np.Inf
         if depthLeft == 0:
             return
+        # ...
+        #   return
         for possibleMove in self.possibleMoves:
             try:
                 score = self.HastTable.get(possibleMove)

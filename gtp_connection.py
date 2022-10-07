@@ -30,6 +30,7 @@ from board import GoBoard
 from board_util import GoBoardUtil
 from engine import GoEngine
 
+
 class GtpConnection:
     def __init__(self, go_engine: GoEngine, board: GoBoard, debug_mode: bool = False) -> None:
         """
@@ -343,11 +344,6 @@ class GtpConnection:
         except Exception as e:
             self.respond("Error: {}".format(str(e)))
 
-    def solve(self, color) -> str:
-        self.solver.re(board=self.board, color=color, possibleMoves=GoBoardUtil.generate_legal_moves(self.board, color))
-        bestMove = self.solver.run(depthLeft=10)
-        return bestMove
-
     def genmove_cmd(self, args: List[str]) -> None:
         """ generate a move for color args[0] in {'b','w'} """
         # change this method to use your solver
@@ -355,7 +351,7 @@ class GtpConnection:
         color = color_to_int(board_color)
         # TODO: get best move from solver and use play_cmd play move 
         # get best move from solver
-        best_move = self.solve(color)
+        best_move = self.solve_cmd(color)
 
         # Not solve in time limit play random move
         if best_move[1] is None:
@@ -378,9 +374,10 @@ class GtpConnection:
             else:
                 self.respond("Illegal move: {}".format(move_as_string))
 
-    def solve_cmd(self, args: List[str]) -> None:
-        # remove this respond and implement this method
-        self.respond('Implement This for Assignment 2')
+    def solve_cmd(self, color) -> str:
+        self.solver.re(board=self.board, color=color, possibleMoves=GoBoardUtil.generate_legal_moves(self.board, color))
+        bestMove = self.solver.run(depthLeft=10)
+        return bestMove
 
     def timelimit_cmd(self, args):
         # get the time limit if out of range set as default
