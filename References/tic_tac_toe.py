@@ -8,11 +8,12 @@
 import random
 from game_basics import EMPTY, BLACK, WHITE, isEmptyBlackWhite, opponent
 
+
 class TicTacToe(object):
-# Board is stored in array of size 9 as follows:
-# 0 1 2
-# 3 4 5
-# 6 7 8
+    # Board is stored in array of size 9 as follows:
+    # 0 1 2
+    # 3 4 5
+    # 6 7 8
 
     def __init__(self):
         self.resetGame()
@@ -44,29 +45,29 @@ class TicTacToe(object):
         location = self.moves.pop()
         self.board[location] = EMPTY
         self.switchToPlay()
-    
+
     def hasRow(self, color, start):
-        return (    self.board[start] == color
-                and self.board[start+1] == color
-                and self.board[start+2] == color)
+        return (self.board[start] == color
+                and self.board[start + 1] == color
+                and self.board[start + 2] == color)
 
     def hasCol(self, color, start):
-        return (    self.board[start] == color
-                and self.board[start+3] == color
-                and self.board[start+6] == color)
-    
+        return (self.board[start] == color
+                and self.board[start + 3] == color
+                and self.board[start + 6] == color)
+
     def diag1(self, color):
-        return (    self.board[0] == color
+        return (self.board[0] == color
                 and self.board[4] == color
                 and self.board[8] == color)
 
     def diag2(self, color):
-        return (    self.board[2] == color
+        return (self.board[2] == color
                 and self.board[4] == color
                 and self.board[6] == color)
-    
+
     def isWinner(self, color):
-        return (   self.hasRow(color, 0)
+        return (self.hasRow(color, 0)
                 or self.hasRow(color, 3)
                 or self.hasRow(color, 6)
                 or self.hasCol(color, 0)
@@ -74,7 +75,7 @@ class TicTacToe(object):
                 or self.hasCol(color, 2)
                 or self.diag1(color)
                 or self.diag2(color)
-               )
+                )
 
     def winner(self):
         if self.isWinner(BLACK):
@@ -95,14 +96,14 @@ class TicTacToe(object):
             return True
         assert winColor == opponent(self.toPlay)
         return False
-    
+
     def moveNumber(self):
         return len(self.moves)
 
     def endOfGame(self):
         return (len(self.moves) == 9
                 or self.winner() != EMPTY
-               )
+                )
 
     def legalMoves(self):
         assert not self.endOfGame()
@@ -111,11 +112,11 @@ class TicTacToe(object):
             if self.board[i] == EMPTY:
                 moves.append(i)
         return moves
-        
+
     def code(self):
         c = 0
         for i in range(9):
-            c = 3*c + self.board[i]
+            c = 3 * c + self.board[i]
         return c
 
     # simulate one game from the current state until the end

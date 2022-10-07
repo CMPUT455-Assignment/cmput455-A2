@@ -313,7 +313,6 @@ class GtpConnection:
         else:
             self.respond('')
 
-
     def play_cmd(self, args: List[str]) -> None:
         """
         play a move args[1] for given color args[0] in {'b','w'}

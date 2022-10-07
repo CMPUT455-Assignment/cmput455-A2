@@ -13,7 +13,7 @@ class AlphaBetaForGo:
 
         self.HastTable = {}
 
-    def re(self, board, color, possibleMoves):
+    def re(self, board, color, possibleMoves) -> None:
         self.boardInput: GoBoard = board
         self.board: GoBoard = board
         self.possibleMoves: list[GO_POINT] = possibleMoves
@@ -37,7 +37,8 @@ class AlphaBetaForGo:
         for possibleMove in self.possibleMoves:
             try:
                 score = self.HastTable.get(possibleMove)
-            except KeyError:
+                assert score is not None
+            except:
                 self.board[possibleMove] = self.color
                 score = -self.searcher(-beta, -alpha, depthLeft - 1)
                 self.board = self.boardInput
