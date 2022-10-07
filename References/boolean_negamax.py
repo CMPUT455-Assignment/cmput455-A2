@@ -5,6 +5,7 @@
 import time
 from game_basics import colorAsString, isBlackWhite, opponent
 
+
 def negamaxBoolean(state):
     if state.endOfGame():
         return state.staticallyEvaluateForToPlay()
@@ -15,6 +16,7 @@ def negamaxBoolean(state):
         if success:
             return True
     return False
+
 
 def negamaxBooleanSolveAll(state):
     if state.endOfGame():
@@ -28,6 +30,7 @@ def negamaxBooleanSolveAll(state):
             wins.append(m)
     return wins
 
+
 def solveForColor(state, color): 
 # use for 3-outcome games such as TicTacToe
     assert isBlackWhite(color)
@@ -40,6 +43,7 @@ def solveForColor(state, color):
     state.setDrawWinner(saveOldDrawWinner)
     winForColor = winForToPlay == (color == state.toPlay)
     return winForColor, timeUsed
+
 
 def timed_solve(state): 
     start = time.process_time()

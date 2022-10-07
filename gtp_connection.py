@@ -13,6 +13,7 @@ import numpy as np
 import re
 from sys import stdin, stdout, stderr
 from typing import Any, Callable, Dict, List, Tuple
+from AlphaBeta import AlphaBetaForGo
 
 from board_base import (
     is_black_white,
@@ -60,7 +61,7 @@ class GtpConnection:
             "legal_moves": self.legal_moves_cmd,
             "gogui-rules_legal_moves": self.gogui_rules_legal_moves_cmd,
             "gogui-rules_final_result": self.gogui_rules_final_result_cmd,
-            "solve": self.solve_cmd
+            "solve": self.solve_cmd,
             "timelimit": self.timelimit_cmd
         }
 
@@ -209,9 +210,7 @@ class GtpConnection:
     def list_commands_cmd(self, args: List[str]) -> None:
         """ list all supported GTP commands """
         self.respond(" ".join(list(self.commands.keys())))
-        
-        
-        
+
     def legal_moves_cmd(self, args: List[str]) -> None:
         """
         List legal moves for color args[0] in {'b','w'}
@@ -225,9 +224,9 @@ class GtpConnection:
             gtp_moves.append(format_point(coords))
         sorted_moves = " ".join(sorted(gtp_moves))
         self.respond(sorted_moves)
-        
-        
-        
+
+
+
     """
     ==========================================================================
     Assignment 2 - game-specific commands start here
@@ -238,8 +237,8 @@ class GtpConnection:
     Assignment 2 - commands we already implemented for you
     ==========================================================================
     """
-        
-        
+
+
 
     def gogui_analyze_cmd(self, args):
         """ We already implemented this function for Assignment 2 """
@@ -283,9 +282,7 @@ class GtpConnection:
                     assert False
             str += '\n'
         self.respond(str)
-        
-        
-    
+
     def gogui_rules_legal_moves_cmd(self, args):
         # get all the legal moves
         legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
@@ -296,8 +293,6 @@ class GtpConnection:
         point_strs = ' '.join(point_strs).upper()
         self.respond(point_strs)
         return
-        
-
 
     """
     ==========================================================================
@@ -313,7 +308,7 @@ class GtpConnection:
             self.respond('')
         else:
             self.respond('')
-            
+
 
     def play_cmd(self, args: List[str]) -> None:
         """
@@ -324,7 +319,7 @@ class GtpConnection:
             board_color = args[0].lower()
             board_move = args[1]
             color = color_to_int(board_color)
-            
+
             coord = move_to_coord(args[1], self.board.size)
             if coord:
                 move = coord_to_point(coord[0], coord[1], self.board.size)
@@ -333,7 +328,7 @@ class GtpConnection:
                     "Error executing move {} converted from {}".format(move, args[1])
                 )
                 return
-            
+
             success = self.board.play_move(move, color)
             if not success:
                 self.respond('illegal move')
@@ -345,8 +340,13 @@ class GtpConnection:
             self.respond()
         except Exception as e:
             self.respond("Error: {}".format(str(e)))
-            
-    
+
+    def solve(self, color) -> str:
+        alphabeta = AlphaBetaForGo(board=self.board, color=color, possibleMoves=GoBoardUtil.generate_legal_moves(self.board, color))
+        bestMove = alphabeta.run()
+        return bestMove
+
+
 
     def genmove_cmd(self, args: List[str]) -> None:
         """ generate a move for color args[0] in {'b','w'} """
@@ -355,7 +355,7 @@ class GtpConnection:
         color = color_to_int(board_color)
         # TODO: get best move from solver and use play_cmd play move 
         # get best move from solver
-        # best_move = self.solve(self.board, color)
+        best_move = self.solve(color)
 
         # Not solve in time limit play random move
         if best_move[1] is None:
@@ -375,30 +375,27 @@ class GtpConnection:
             if self.board.is_legal(move, color):
                 self.board.play_move(move, color)
                 self.respond(move_as_string)
+            else:
+                self.respond("Illegal move: {}".format(move_as_string))
 
-        else:
-            self.respond("Illegal move: {}".format(move_as_string))
-            
-            
     def solve_cmd(self, args: List[str]) -> None:
         # remove this respond and implement this method
         self.respond('Implement This for Assignment 2')
 
     def timelimit_cmd(self, args):
-
-        # get the time limit if out of range set as defult
+        # get the time limit if out of range set as default
         self.timelimit = 1
         timelimit = int(args[0])
-        if timelimit >= 1 and timelimit <= 100:
+        if 1 <= timelimit <= 100:
             self.timelimit = timelimit
         self.respond('')
-
 
     """
     ==========================================================================
     Assignment 2 - game-specific commands end here
     ==========================================================================
     """
+
 
 def point_to_coord(point: GO_POINT, boardsize: int) -> Tuple[int, int]:
     """
@@ -431,7 +428,7 @@ def move_to_coord(point_str: str, board_size: int) -> Tuple[int, int]:
     if col_c < "i":
         col += 1
     row = int(s[1:])
-        
+
     return row, col
 
 

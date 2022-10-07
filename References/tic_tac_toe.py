@@ -100,7 +100,7 @@ class TicTacToe(object):
         return len(self.moves)
 
     def endOfGame(self):
-        return (   len(self.moves) == 9
+        return (len(self.moves) == 9
                 or self.winner() != EMPTY
                )
 

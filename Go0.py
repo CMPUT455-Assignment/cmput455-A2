@@ -5,8 +5,6 @@
 #!/usr/bin/python3
 # Set the path to your python3 above
 
-
-
 from gtp_connection import GtpConnection
 from board_base import DEFAULT_SIZE, GO_POINT, GO_COLOR
 from board import GoBoard
@@ -31,10 +29,8 @@ class Go0:
         GoEngine.__init__(self, "Go0", 1.0)
 
     def get_move(self, board: GoBoard, color: GO_COLOR) -> GO_POINT:
-        return GoBoardUtil.generate_random_move(board, color, 
-                                                use_eye_filter=False)
+        return GoBoardUtil.generate_random_move(board, color, use_eye_filter=False)
 
-    
   
 def run() -> None:
     """

@@ -79,8 +79,6 @@ class GoBoard(object):
     def pt(self, row: int, col: int) -> GO_POINT:
         return coord_to_point(row, col, self.size)
 
-        
-        
     def is_legal(self, point: GO_POINT, color: GO_COLOR) -> bool:
         """
         Check whether it is legal for color to play on point
@@ -91,8 +89,6 @@ class GoBoard(object):
         can_play_move = board_copy.play_move(point, color)
         return can_play_move
 
-        
-           
     def get_empty_points(self) -> np.ndarray:
         """
         Return:
@@ -104,8 +100,7 @@ class GoBoard(object):
         assert row >= 1
         assert row <= self.size
         return row * self.NS + 1
-        
-        
+
     def _initialize_empty_points(self, board_array: np.ndarray) -> None:
         """
         Fills points on the board with EMPTY
@@ -133,8 +128,7 @@ class GoBoard(object):
             elif self.board[d] == opp_color:
                 false_count += 1
         return false_count <= 1 - at_edge  # 0 at edge, 1 in center
-        
-        
+
     def _is_surrounded(self, point: GO_POINT, color: GO_COLOR) -> bool:
         """
         check whether empty point is surrounded by stones of color
@@ -185,8 +179,7 @@ class GoBoard(object):
                     marker[nb] = True
                     pointstack.append(nb)
         return marker
-        
-        
+
     def _detect_and_process_capture(self, nb_point: GO_POINT) -> GO_POINT:
         """
         Check whether opponent block on nb_point is captured.
@@ -196,7 +189,6 @@ class GoBoard(object):
         """
         opp_block = self._block_of(nb_point)
         return not self._has_liberty(opp_block)
-
 
     def play_move(self, point: GO_POINT, color: GO_COLOR) -> bool:
         """
@@ -222,8 +214,6 @@ class GoBoard(object):
                 #undo capturing move
                     self.board[point] = EMPTY
                     return False
-                    
-                    
         #check for suicide
         block = self._block_of(point)
         if not self._has_liberty(block):  
