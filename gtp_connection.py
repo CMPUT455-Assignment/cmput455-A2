@@ -80,7 +80,6 @@ class GtpConnection:
         }
         self.solver = AlphaBetaForGo()
 
-
     def write(self, data: str) -> None:
         stdout.write(data)
 
@@ -229,8 +228,6 @@ class GtpConnection:
         sorted_moves = " ".join(sorted(gtp_moves))
         self.respond(sorted_moves)
 
-
-
     """
     ==========================================================================
     Assignment 2 - game-specific commands start here
@@ -241,8 +238,6 @@ class GtpConnection:
     Assignment 2 - commands we already implemented for you
     ==========================================================================
     """
-
-
 
     def gogui_analyze_cmd(self, args):
         """ We already implemented this function for Assignment 2 """
@@ -271,10 +266,10 @@ class GtpConnection:
         """ We already implemented this function for Assignment 2 """
         size = self.board.size
         str = ''
-        for row in range(size-1, -1, -1):
+        for row in range(size - 1, -1, -1):
             start = self.board.row_start(row + 1)
             for i in range(size):
-                #str += '.'
+                # str += '.'
                 point = self.board.board[start + i]
                 if point == BLACK:
                     str += 'X'
@@ -292,7 +287,7 @@ class GtpConnection:
         legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
         coords = [point_to_coord(move, self.board.size) for move in legal_moves]
         # convert to point strings
-        point_strs  = [ chr(ord('a') + col - 1) + str(row) for row, col in coords]
+        point_strs = [chr(ord('a') + col - 1) + str(row) for row, col in coords]
         point_strs.sort()
         point_strs = ' '.join(point_strs).upper()
         self.respond(point_strs)
@@ -303,6 +298,7 @@ class GtpConnection:
     Assignment 2 - game-specific commands you have to implement or modify
     ==========================================================================
     """
+
     def gogui_rules_final_result_cmd(self, args):
         """ Implement this method correctly """
         legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
@@ -375,12 +371,17 @@ class GtpConnection:
                 self.respond("Illegal move: {}".format(move_as_string))
 
     def solve_cmd(self, args) -> str:
-        self.solver.re(board=self.board, color=self.board.current_player, possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
-        #self.solver.re(self)
-        bestMove = self.solver.run(depthLeft=6)
-        self.respond(f'Best move:{bestMove}')
-        # bestMove = self.solver.run(depthLeft=10)
-        #return bestMove
+        boardFake = self.board.copy()
+        self.solver.re(board=boardFake,
+                       color=self.board.current_player,
+                       possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
+        bestMove = self.solver.run(depthLeft=10)
+        if bestMove is not False:
+            self.respond(f'Best move: {bestMove}')
+            return bestMove
+        else:
+            self.respond(f'End of game OR No more possible move there')
+            return "END"
 
     def timelimit_cmd(self, args):
         # get the time limit if out of range set as default
@@ -431,7 +432,6 @@ def move_to_coord(point_str: str, board_size: int) -> Tuple[int, int]:
     row = int(s[1:])
 
     return row, col
-
 
 
 def color_to_int(c: str) -> int:

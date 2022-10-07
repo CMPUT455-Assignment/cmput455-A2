@@ -2,6 +2,7 @@ import numpy as np
 
 from board import GoBoard
 from board_base import GO_POINT
+import gtp_connection
 
 
 class AlphaBetaForGo:
@@ -13,17 +14,9 @@ class AlphaBetaForGo:
 
         self.HastTable = {}
 
-    """    
-    def re(self, GTP) -> None:
-        self.boardInput: GoBoard = GTP.board
-        self.board: GoBoard = self.board
-        self.possibleMoves: list[GO_POINT] = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
-        self.color = self.board.current_player
-    """
-
     def re(self, board, color, possibleMoves) -> None:
         self.boardInput: GoBoard = board
-        self.board: GoBoard = board.copy()
+        self.board: GoBoard = board
         self.color = color
         self.possibleMoves: list[GO_POINT] = possibleMoves
 
@@ -32,9 +25,13 @@ class AlphaBetaForGo:
         scores = []
         for possibleMove in self.possibleMoves:
             scores.append(self.HastTable.get(possibleMove))
+        try:
+            maxIndex = scores.index(max(scores))
+            move = divmod(self.possibleMoves[maxIndex], self.board.size + 1)
+            return gtp_connection.format_point(move)
+        except:
+            return False
 
-        maxIndex = scores.index(max(scores))
-        return self.possibleMoves[maxIndex]
 
     def searcher(self, alpha, beta, depthLeft) -> None | int:
         bestScore = -np.Inf
@@ -56,3 +53,6 @@ class AlphaBetaForGo:
                     alpha = score
             self.HastTable[possibleMove] = bestScore
         return bestScore
+
+
+

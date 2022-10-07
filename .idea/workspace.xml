@@ -37,6 +37,13 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings>
+        <option name="useSoftWraps" value="true" />
+      </console-settings>
+    </option>
+  </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -104,7 +111,7 @@
       <workItem from="1665101257425" duration="7485000" />
       <workItem from="1665120873411" duration="612000" />
       <workItem from="1665121567773" duration="990000" />
-      <workItem from="1665179278214" duration="3754000" />
+      <workItem from="1665179278214" duration="5105000" />
     </task>
     <servers />
   </component>
