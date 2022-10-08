@@ -15,6 +15,7 @@ import re
 from sys import stdin, stdout, stderr
 from typing import Any, Callable, Dict, List, Tuple
 from AlphaBeta import AlphaBetaForGo
+import time
 
 from board_base import (
     is_black_white,
@@ -371,17 +372,33 @@ class GtpConnection:
                 self.respond("Illegal move: {}".format(move_as_string))
 
     def solve_cmd(self, args) -> str:
+        start = time.process_time()
+
         boardFake = self.board.copy()
         self.solver.re(board=boardFake,
                        color=self.board.current_player,
                        possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
         bestMove = self.solver.run(depthLeft=10)
-        if bestMove is not False:
-            self.respond(f'Best move: {bestMove}')
-            return bestMove
-        else:
-            self.respond(f'End of game OR No more possible move there')
-            return "END"
+
+        timeUsed = time.process_time() - start
+
+        if timeUsed > self.timelimit:
+             self.respond('unknown')
+        elif timeUsed <= self.timelimit:
+            if bestMove is not False:
+                if self.board.current_player == 1:
+                    winner = "b"
+                elif self.board.current_player == 2:
+                    winner = "w"
+                self.respond(f'Best move:{winner} {bestMove}')
+                return bestMove
+            else:
+                if self.board.current_player == 1:
+                    winner = "w"
+                elif self.board.current_player == 2:
+                    winner = "b"
+                self.respond(f'End of game OR No more possible move there, {winner}')
+                return "END"
 
     def timelimit_cmd(self, args):
         # get the time limit if out of range set as default
