@@ -374,38 +374,56 @@ class GtpConnection:
                 self.respond("Illegal move: {}".format(move_as_string))
 
     def solve_cmd(self, args) -> str:
+        DEPTH = 5
         start = time.process_time()
 
-        boardFake_b = self.board.copy()
-        self.solver_b.re(board=boardFake_b,
-                         color=self.board.current_player,
-                         possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
-        bestMove_b = self.solver_b.run(depthLeft=10)
-        bestScore_b = self.solver_b.getMaxScore()
+        if self.board.current_player == 1:
+            boardFake_b = self.board.copy()
+            self.solver_b.re(board=boardFake_b,
+                             color=self.board.current_player,
+                             possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
+            bestMove_b = self.solver_b.run(depthLeft=DEPTH)
+            bestScore_b = self.solver_b.getMaxScore()
+            board_for_w = self.solver_b.getPredictBoard()
 
-        boardFake_w = self.board.copy()
-        self.solver_w.re(board=boardFake_w,
-                         color=self.board.current_player,
-                         possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
-        bestMove_w = self.solver_w.run(depthLeft=10)
-        bestScore_w = self.solver_w.getMaxScore()
+            self.solver_w.re(board=board_for_w,
+                             color=self.board.current_player,
+                             possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
+            bestMove_w = self.solver_w.run(depthLeft=DEPTH)
+            bestScore_w = self.solver_w.getMaxScore()
+        else:
+            boardFake_w = self.board.copy()
+            self.solver_w.re(board=boardFake_w,
+                             color=self.board.current_player,
+                             possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
+            bestMove_w = self.solver_w.run(depthLeft=DEPTH)
+            bestScore_w = self.solver_w.getMaxScore()
+            board_for_b = self.solver_w.getPredictBoard()
+
+            self.solver_b.re(board=board_for_b,
+                             color=self.board.current_player,
+                             possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
+            bestMove_b = self.solver_b.run(depthLeft=DEPTH)
+            bestScore_b = self.solver_b.getMaxScore()
+
         timeUsed = time.process_time() - start
-        
+
         # after search best move
         if timeUsed > self.timelimit:
              self.respond('unknown')
-
         elif timeUsed <= self.timelimit:
+            if "z" in format_point(divmod(bestMove_w, self.board.size + 1)).lower():
+                self.respond('resign')
             if self.board.current_player == 1:
                 if bestScore_b >= bestScore_w:
-                    self.respond(f'b {bestMove_b.lower()}')
+                    self.respond(f'b {format_point(divmod(bestMove_b, self.board.size + 1)).lower()}')
                 else:
-                    self.respond(f'w')
+                    self.respond('w')
             if self.board.current_player == 2:
                 if bestScore_w >= bestScore_b:
-                    self.respond(f'w {bestMove_w.lower()}')
+                    self.respond(f'w {format_point(divmod(bestMove_w, self.board.size + 1)).lower()}')
                 else:
-                    self.respond(f'b')
+                    self.respond('b')
 
     def timelimit_cmd(self, args):
         # get the time limit if out of range set as default

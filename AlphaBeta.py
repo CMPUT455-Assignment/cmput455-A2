@@ -2,11 +2,11 @@ import numpy as np
 
 from board import GoBoard
 from board_base import GO_POINT
-import gtp_connection
 
 
 class AlphaBetaForGo:
     def __init__(self, board=None, color=None, possibleMoves=None):
+        self.bestPredictionMove = None
         self.boardInput: GoBoard = board
         self.board: GoBoard = board
         self.possibleMoves: list[GO_POINT] = possibleMoves
@@ -16,12 +16,23 @@ class AlphaBetaForGo:
         self.HastTable = {}
 
     def re(self, board, color, possibleMoves) -> None:
-        self.boardInput: GoBoard = board
-        self.board: GoBoard = board
+        self.boardInput: GoBoard = board.copy()
+        self.board: GoBoard = board.copy()
         self.color = color
         self.possibleMoves: list[GO_POINT] = possibleMoves
 
-    def run(self, depthLeft=6):
+    def getMaxScore(self):
+        return self.maxScore
+
+    def getPredictMove(self):
+        return self.bestPredictionMove
+
+    def getPredictBoard(self):
+        predictBoard = self.boardInput.copy()
+        predictBoard.play_move(self.bestPredictionMove, self.color)
+        return predictBoard
+
+    def run(self, depthLeft=5):
         self.searcher(alpha=-np.Inf, beta=np.Inf, depthLeft=depthLeft)
         scores = []
         for possibleMove in self.possibleMoves:
@@ -29,26 +40,26 @@ class AlphaBetaForGo:
         try:
             self.maxScore = max(scores)
             maxIndex = scores.index(self.maxScore)
-            move = divmod(self.possibleMoves[maxIndex], self.board.size + 1)
-            return gtp_connection.format_point(move)
+            self.bestPredictionMove = self.possibleMoves[maxIndex]
+            return self.bestPredictionMove
         except:
             return False
 
-    def getMaxScore(self):
-        return self.maxScore
-
     def searcher(self, alpha, beta, depthLeft):
         bestScore = -np.Inf
-        if (depthLeft == 0) or (len(self.possibleMoves) == 0):
+        if (len(self.possibleMoves) == 0) or (depthLeft == 0):
             return True
         for possibleMove in self.possibleMoves:
+            """
             try:
                 score = self.HastTable.get(possibleMove)
                 assert score is not None
             except AssertionError:
-                self.board.play_move(possibleMove, self.color)
-                score = -self.searcher(-beta, -alpha, depthLeft - 1)
-                self.board = self.boardInput
+            """
+            self.board.play_move(possibleMove, self.color)
+            score = -self.searcher(-beta, -alpha, depthLeft - 1)
+            self.board = self.boardInput
+
             if score >= beta:
                 return score
             if score > bestScore:
