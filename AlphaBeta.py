@@ -21,7 +21,7 @@ class AlphaBetaForGo:
         self.color = color
         self.possibleMoves: list[GO_POINT] = possibleMoves
 
-    def run(self, depthLeft=6) -> str | bool:
+    def run(self, depthLeft=6):
         self.searcher(alpha=-np.Inf, beta=np.Inf, depthLeft=depthLeft)
         scores = []
         for possibleMove in self.possibleMoves:
@@ -37,7 +37,7 @@ class AlphaBetaForGo:
     def getMaxScore(self):
         return self.maxScore
 
-    def searcher(self, alpha, beta, depthLeft) -> None | int:
+    def searcher(self, alpha, beta, depthLeft):
         bestScore = -np.Inf
         if (depthLeft == 0) or (len(self.possibleMoves) == 0):
             return True

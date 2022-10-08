@@ -81,6 +81,7 @@ class GtpConnection:
         }
         self.solver_b = AlphaBetaForGo()
         self.solver_w = AlphaBetaForGo()
+        self.timelimit = 1
 
     def write(self, data: str) -> None:
         stdout.write(data)
@@ -393,20 +394,18 @@ class GtpConnection:
         # after search best move
         if timeUsed > self.timelimit:
              self.respond('unknown')
-             return
+
         elif timeUsed <= self.timelimit:
-            # if best_move is not False:
             if self.board.current_player == 1:
-                if bestScore_b > bestScore_w:
+                if bestScore_b >= bestScore_w:
                     self.respond(f'b {bestMove_b.lower()}')
                 else:
                     self.respond(f'w')
             if self.board.current_player == 2:
-                if bestScore_w > bestScore_b:
+                if bestScore_w >= bestScore_b:
                     self.respond(f'w {bestMove_w.lower()}')
                 else:
                     self.respond(f'b')
-
 
     def timelimit_cmd(self, args):
         # get the time limit if out of range set as default

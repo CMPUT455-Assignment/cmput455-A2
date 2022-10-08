@@ -4,8 +4,11 @@
     <list default="true" id="488ea38e-5f39-469d-a222-d674f6bf90a2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AlphaBeta.py" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaBeta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Go0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Go0.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a2_public_easy.gtp.html" beforeDir="false" afterPath="$PROJECT_DIR$/a2_public_easy.gtp.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a2_public_easy.gtp.out.html" beforeDir="false" afterPath="$PROJECT_DIR$/a2_public_easy.gtp.out.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gtp_connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/gtp_connection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/summary.dat" beforeDir="false" afterPath="$PROJECT_DIR$/summary.dat" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

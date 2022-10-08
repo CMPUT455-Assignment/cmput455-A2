@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>Output: a2_public_easy.gtp</title>
-<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="gogui-regress 1.5.1 (http://gogui.sf.net)">
 <style type="text/css">
 <!--
@@ -23,10 +23,10 @@ span.test { font-weight:bold; }
 </td></tr>
 </table>
 <table width="100%" bgcolor="#e0e0e0">
-<tr><th align="left">Date:</th><td>October 7, 2022 7:54:01 PM MDT</td></tr>
-<tr><th align="left">Host:</th><td>LAPTOP-8C56J47P</td></tr>
+<tr><th align="left">Date:</th><td>October 8, 2022 1:13:22 PM MDT</td></tr>
+<tr><th align="left">Host:</th><td>Macintosh.local</td></tr>
 <tr><th align="left" valign="top">Command:</th>
-<td valign="top"><tt>python Go0.py</tt></td></tr>
+<td valign="top"><tt>python3 Go0.py</tt></td></tr>
 </table>
 <pre style="margin:1em">
 name
@@ -47,33 +47,89 @@ cputime
 <span class="command">clear_board
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]]
+
 <span class="command">timelimit 10
 </span>= 
 
 <span class="command">play b a4
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]]
+
 <span class="command">play w a2
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [2 0 0 0]
+ [0 0 0 0]]
 
 <span class="command">play b b1
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [2 0 0 0]
+ [0 1 0 0]]
+
 <span class="command">play w b3
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 2 0 0]
+ [2 0 0 0]
+ [0 1 0 0]]
 
 <span class="command">play b c2
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 2 0 0]
+ [2 0 1 0]
+ [0 1 0 0]]
+
 <span class="command">play w d1
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 2 0 0]
+ [2 0 1 0]
+ [0 1 0 2]]
 
 <span class="command">play b d3
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 2 0 1]
+ [2 0 1 0]
+ [0 1 0 2]]
+
 <span class="test"><a name="10">10 solve
 </a>#?[w d4|w c4]
-</span><span class="fail">= Best move:w C1
+</span><span class="fail">= w c1
 
 </span>
 <span class="command">boardsize 4
@@ -88,18 +144,46 @@ cputime
 <span class="command">play b a4
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]]
+
 <span class="command">play w a2
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [2 0 0 0]
+ [0 0 0 0]]
 
 <span class="command">play b d1
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [2 0 0 0]
+ [0 0 0 1]]
+
 <span class="command">play w d2
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [2 0 0 2]
+ [0 0 0 1]]
+
 <span class="test"><a name="20">20 solve
 </a>#?[b a1|b b1|b b3]
-</span><span class="fail">= Best move:b C1
+</span><span class="fail">= b c1
 
 </span>
 <span class="command">boardsize 4
@@ -114,21 +198,56 @@ cputime
 <span class="command">play b a4
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]]
+
 <span class="command">play w a2
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [2 0 0 0]
+ [0 0 0 0]]
 
 <span class="command">play b d1
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [2 0 0 0]
+ [0 0 0 1]]
+
 <span class="command">play w d2
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [2 0 0 2]
+ [0 0 0 1]]
 
 <span class="command">play b d3
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 1]
+ [2 0 0 2]
+ [0 0 0 1]]
+
 <span class="test"><a name="30">30 solve
 </a>#?[w b1|w b2]
-</span><span class="fail">= Best move:w B2
+= w b2
 
 </span>
 <span class="command">boardsize 4
@@ -143,36 +262,106 @@ cputime
 <span class="command">play b c1
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]
+ [0 0 1 0]]
+
 <span class="command">play w b4
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[0 2 0 0]
+ [0 0 0 0]
+ [0 0 0 0]
+ [0 0 1 0]]
 
 <span class="command">play b a3
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 2 0 0]
+ [1 0 0 0]
+ [0 0 0 0]
+ [0 0 1 0]]
+
 <span class="command">play w d2
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[0 2 0 0]
+ [1 0 0 0]
+ [0 0 0 2]
+ [0 0 1 0]]
 
 <span class="command">play b d4
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 0 0 0]
+ [0 0 0 2]
+ [0 0 1 0]]
+
 <span class="command">play w a1
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 0 0 0]
+ [0 0 0 2]
+ [2 0 1 0]]
 
 <span class="command">play b b3
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 1 0 0]
+ [0 0 0 2]
+ [2 0 1 0]]
+
 <span class="command">play w c2
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 1 0 0]
+ [0 0 2 2]
+ [2 0 1 0]]
 
 <span class="command">play b c3
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 1 1 0]
+ [0 0 2 2]
+ [2 0 1 0]]
+
 <span class="command">play w b2
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 1 1 0]
+ [0 2 2 2]
+ [2 0 1 0]]
+
 <span class="test"><a name="40">40 solve
 </a>#?[w]
-</span><span class="fail">= Best move:b D3
+</span><span class="fail">= b d3
 
 </span>
 <span class="command">boardsize 4
@@ -187,72 +376,157 @@ cputime
 <span class="command">play b c1
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]
+ [0 0 1 0]]
+
 <span class="command">play w b4
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[0 2 0 0]
+ [0 0 0 0]
+ [0 0 0 0]
+ [0 0 1 0]]
 
 <span class="command">play b a3
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 2 0 0]
+ [1 0 0 0]
+ [0 0 0 0]
+ [0 0 1 0]]
+
 <span class="command">play w d2
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[0 2 0 0]
+ [1 0 0 0]
+ [0 0 0 2]
+ [0 0 1 0]]
 
 <span class="command">play b d4
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 0 0 0]
+ [0 0 0 2]
+ [0 0 1 0]]
+
 <span class="command">play w a1
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 0 0 0]
+ [0 0 0 2]
+ [2 0 1 0]]
 
 <span class="command">play b b3
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 1 0 0]
+ [0 0 0 2]
+ [2 0 1 0]]
+
 <span class="command">play w c2
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 1 0 0]
+ [0 0 2 2]
+ [2 0 1 0]]
 
 <span class="command">play b c3
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 1 1 0]
+ [0 0 2 2]
+ [2 0 1 0]]
+
 <span class="command">play w b2
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[0 2 0 1]
+ [1 1 1 0]
+ [0 2 2 2]
+ [2 0 1 0]]
 
 <span class="command">play b a4
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 2 0 1]
+ [1 1 1 0]
+ [0 2 2 2]
+ [2 0 1 0]]
+
 <span class="command">play w d1
 </span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 2 0 1]
+ [1 1 1 0]
+ [0 2 2 2]
+ [2 0 1 2]]
 
 <span class="command">play b a2
 </span>= 
 
+<span class="command">showboard
+</span>= 
+[[1 2 0 1]
+ [1 1 1 0]
+ [1 2 2 2]
+ [2 0 1 2]]
+
 <span class="command">play w d3
 </span>= 
 
-<span class="test"><a name="50">50 genmove b
-</a>#?[resign]
-</span><span class="fail">= End of game OR No more possible move there, w
+<span class="command">showboard
+</span>= 
+[[1 2 0 1]
+ [1 1 1 2]
+ [1 2 2 2]
+ [2 0 1 2]]
 
-</span></pre>
-<hr style="margin:1em" size="1">
-<pre style="margin:1em">
-</span>cputime
-<span class="stderr">Traceback (most recent call last):
-  File "Go0.py", line 42, in &lt;module&gt;
+<span class="test"><a name="50">50 genmove b
+</a></span><span class="stderr">Traceback (most recent call last):
+  File "/Users/den/Desktop/CMPUT 455 - A2/cmput455-A2/Go0.py", line 42, in &lt;module&gt;
     run()
-  File "Go0.py", line 38, in run
+  File "/Users/den/Desktop/CMPUT 455 - A2/cmput455-A2/Go0.py", line 38, in run
     con.start_connection()
-  File "C:\Users\Mia\Desktop\CMPUT455\assignment\Assign2\cmput455-A2\gtp_connection.py", line 97, in start_connection
+  File "/Users/den/Desktop/CMPUT 455 - A2/cmput455-A2/gtp_connection.py", line 99, in start_connection
     self.get_cmd(line)
-  File "C:\Users\Mia\Desktop\CMPUT455\assignment\Assign2\cmput455-A2\gtp_connection.py", line 125, in get_cmd
+  File "/Users/den/Desktop/CMPUT 455 - A2/cmput455-A2/gtp_connection.py", line 127, in get_cmd
     raise e
-  File "C:\Users\Mia\Desktop\CMPUT455\assignment\Assign2\cmput455-A2\gtp_connection.py", line 121, in get_cmd
+  File "/Users/den/Desktop/CMPUT 455 - A2/cmput455-A2/gtp_connection.py", line 123, in get_cmd
     self.commands[command_name](args)
-  File "C:\Users\Mia\Desktop\CMPUT455\assignment\Assign2\cmput455-A2\gtp_connection.py", line 366, in genmove_cmd
-    move_coord = point_to_coord(move, self.board.size)
-  File "C:\Users\Mia\Desktop\CMPUT455\assignment\Assign2\cmput455-A2\gtp_connection.py", line 425, in point_to_coord
-    return divmod(point, NS)
-TypeError: unsupported operand type(s) for divmod(): 'NoneType' and 'int'
-</span>
-</pre>
-<hr style="margin-bottom:0" size="1">
-<p style="margin-top:1; margin-right:5" align="right"><i><small>Generated on 10/7/22 7:54 PM by gogui-regress 1.5.1 (<a href="http://gogui.sf.net">http://gogui.sf.net</a>)</small></i></p>
-</body>
-</html>
+  File "/Users/den/Desktop/CMPUT 455 - A2/cmput455-A2/gtp_connection.py", line 353, in genmove_cmd
+    best_move = self.solve_cmd(color)
+  File "/Users/den/Desktop/CMPUT 455 - A2/cmput455-A2/gtp_connection.py", line 401, in solve_cmd
+    self.respond(f'b {bestMove_b.lower()}')
+AttributeError: 'bool' object has no attribute 'lower'
