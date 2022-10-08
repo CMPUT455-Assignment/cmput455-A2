@@ -307,9 +307,9 @@ class GtpConnection:
         if len(legal_moves) > 0:
             self.respond('unknown')
         elif self.board.current_player == BLACK:
-            self.respond('')
+            self.respond('white')
         else:
-            self.respond('')
+            self.respond('black')
 
     def play_cmd(self, args: List[str]) -> None:
         """
@@ -388,33 +388,25 @@ class GtpConnection:
                          possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
         bestMove_w = self.solver_w.run(depthLeft=10)
         bestScore_w = self.solver_w.getMaxScore()
-
-        if bestScore_b > bestScore_w:
-            prediction = 1
-        elif bestScore_b > bestScore_w:
-            prediction = self.board.current_player
-        else:
-            prediction = 2
-
         timeUsed = time.process_time() - start
-
+        
+        # after search best move
         if timeUsed > self.timelimit:
              self.respond('unknown')
+             return
         elif timeUsed <= self.timelimit:
-            if bestMove is not False:
-                if self.board.current_player == 1:
-                    winner = "b"
-                elif self.board.current_player == 2:
-                    winner = "w"
-                self.respond(f'Best move:{winner} {bestMove}')
-                return bestMove
-            else:
-                if self.board.current_player == 1:
-                    winner = "w"
-                elif self.board.current_player == 2:
-                    winner = "b"
-                self.respond(f'End of game OR No more possible move there, {winner}')
-                return "END"
+            # if best_move is not False:
+            if self.board.current_player == 1:
+                if bestScore_b > bestScore_w:
+                    self.respond(f'b {bestMove_b.lower()}')
+                else:
+                    self.respond(f'w')
+            if self.board.current_player == 2:
+                if bestScore_w > bestScore_b:
+                    self.respond(f'w {bestMove_w.lower()}')
+                else:
+                    self.respond(f'b')
+
 
     def timelimit_cmd(self, args):
         # get the time limit if out of range set as default
