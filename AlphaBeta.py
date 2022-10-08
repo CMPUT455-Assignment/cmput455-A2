@@ -11,6 +11,7 @@ class AlphaBetaForGo:
         self.board: GoBoard = board
         self.possibleMoves: list[GO_POINT] = possibleMoves
         self.color = color
+        self.maxScore = None
 
         self.HastTable = {}
 
@@ -20,18 +21,21 @@ class AlphaBetaForGo:
         self.color = color
         self.possibleMoves: list[GO_POINT] = possibleMoves
 
-    def run(self, depthLeft=6) -> str:
+    def run(self, depthLeft=6) -> str | bool:
         self.searcher(alpha=-np.Inf, beta=np.Inf, depthLeft=depthLeft)
         scores = []
         for possibleMove in self.possibleMoves:
             scores.append(self.HastTable.get(possibleMove))
         try:
-            maxIndex = scores.index(max(scores))
+            self.maxScore = max(scores)
+            maxIndex = scores.index(self.maxScore)
             move = divmod(self.possibleMoves[maxIndex], self.board.size + 1)
             return gtp_connection.format_point(move)
         except:
             return False
 
+    def getMaxScore(self):
+        return self.maxScore
 
     def searcher(self, alpha, beta, depthLeft) -> None | int:
         bestScore = -np.Inf

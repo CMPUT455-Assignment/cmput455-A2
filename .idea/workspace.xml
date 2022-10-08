@@ -4,6 +4,7 @@
     <list default="true" id="488ea38e-5f39-469d-a222-d674f6bf90a2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AlphaBeta.py" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaBeta.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Go0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Go0.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gtp_connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/gtp_connection.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -111,7 +112,7 @@
       <workItem from="1665101257425" duration="7485000" />
       <workItem from="1665120873411" duration="612000" />
       <workItem from="1665121567773" duration="990000" />
-      <workItem from="1665179278214" duration="5105000" />
+      <workItem from="1665179278214" duration="7088000" />
     </task>
     <servers />
   </component>

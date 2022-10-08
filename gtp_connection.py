@@ -79,7 +79,8 @@ class GtpConnection:
             "play": (2, "Usage: play {b,w} MOVE"),
             "legal_moves": (1, "Usage: legal_moves {w,b}"),
         }
-        self.solver = AlphaBetaForGo()
+        self.solver_b = AlphaBetaForGo()
+        self.solver_w = AlphaBetaForGo()
 
     def write(self, data: str) -> None:
         stdout.write(data)
@@ -374,11 +375,26 @@ class GtpConnection:
     def solve_cmd(self, args) -> str:
         start = time.process_time()
 
-        boardFake = self.board.copy()
-        self.solver.re(board=boardFake,
-                       color=self.board.current_player,
-                       possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
-        bestMove = self.solver.run(depthLeft=10)
+        boardFake_b = self.board.copy()
+        self.solver_b.re(board=boardFake_b,
+                         color=self.board.current_player,
+                         possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
+        bestMove_b = self.solver_b.run(depthLeft=10)
+        bestScore_b = self.solver_b.getMaxScore()
+
+        boardFake_w = self.board.copy()
+        self.solver_w.re(board=boardFake_w,
+                         color=self.board.current_player,
+                         possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
+        bestMove_w = self.solver_w.run(depthLeft=10)
+        bestScore_w = self.solver_w.getMaxScore()
+
+        if bestScore_b > bestScore_w:
+            prediction = 1
+        elif bestScore_b > bestScore_w:
+            prediction = self.board.current_player
+        else:
+            prediction = 2
 
         timeUsed = time.process_time() - start
 
