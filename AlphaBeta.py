@@ -1,6 +1,7 @@
 import numpy as np
 
 import board_base
+import board_util
 import gtp_connection
 from board import GoBoard
 from board_base import GO_POINT, EMPTY
@@ -23,12 +24,19 @@ class AlphaBetaForGo:
         self.bestMoveForOpp = None
         self.bestScoreForOpp = None
 
+        self.possibleMovesForCur = None
+        self.possibleMovesForOpp = None
+
+
     def re(self, currentBoard, currentColor) -> None:
-        self.inputBoard = currentBoard
+        self.inputBoard = currentBoard.copy()
         self.currentBoard = currentBoard.copy()
         self.currentBoard2 = currentBoard.copy()
         self.inputColor = currentColor
         self.currentColor = currentColor
+
+        self.possibleMovesForCur = GoBoardUtil.generate_legal_moves(self.inputBoard, self.inputColor)
+        self.possibleMovesForOpp = None
 
     def run(self, depthLeft=5):
         self.run_cur()
@@ -37,33 +45,55 @@ class AlphaBetaForGo:
     def run_cur(self, depthLeft=5):
         self.searcher(alpha=-np.Inf, beta=np.Inf, depthLeft=depthLeft)
         scores = []
-        for possibleMove in self.possibleMovesNow:
-            print(gtp_connection.format_point(divmod(possibleMove, self.inputBoard.size + 1)).lower())
+        for possibleMove in self.possibleMovesForCur:
             if self.inputColor == 1:
-                scores.append(self.HastTable_b.get(possibleMove))
+                move_b = self.HastTable_b.get(possibleMove)
+                scores.append(move_b)
+                #print("cur move_b: ", possibleMove, move_b)
             else:
-                scores.append(self.HastTable_w.get(possibleMove))
-        print("w", self.HastTable_w)
-        print("b", self.HastTable_b)
-        self.bestScoreForCur = max(scores)
-        maxIndex = scores.index(self.bestScoreForCur)
-        self.bestMoveForCur = self.possibleMovesNow[maxIndex]
+                move_w = self.HastTable_w.get(possibleMove)
+                scores.append(move_w)
+                #print("cur move_w: ", possibleMove, move_w)
+        #print("b", self.HastTable_b)
+        #print("w", self.HastTable_w)
+        #self.bestScoreForCur = max(scores)
+        #maxIndex = scores.index(self.bestScoreForCur)
+        #self.bestMoveForCur = self.possibleMovesNow[maxIndex]
+        index = 0
+        for item in scores:
+            if item == True:
+                self.bestMoveForCur = self.possibleMovesForCur[index]
+                print("\n\n????", self.bestMoveForCur)
+                break
+            index += 1
 
     def run_opp(self, depthLeft=5):
         self.currentBoard = self.currentBoard2
         self.currentBoard.play_move(self.bestMoveForCur, self.inputColor)
-
+        self.possibleMovesForOpp = GoBoardUtil.generate_legal_moves(self.currentBoard, board_base.opponent(self.inputColor))
+        print("\n\n+++++++ possibleMovesForCur", self.possibleMovesForCur)
+        print("\n+++++++ possibleMovesForOpp", self.possibleMovesForOpp)
         self.searcher(alpha=-np.Inf, beta=np.Inf, depthLeft=depthLeft)
         scores = []
-        for possibleMove in self.possibleMovesNow:
+        for possibleMove in self.possibleMovesForOpp:
             print(gtp_connection.format_point(divmod(possibleMove, self.inputBoard.size + 1)).lower())
             if self.inputColor == 1:
-                scores.append(self.HastTable_b.get(possibleMove))
+                move_b = self.HastTable_b.get(possibleMove)
+                scores.append(move_b)
+                #print("opp move_b: ", possibleMove, move_b)
             else:
-                scores.append(self.HastTable_w.get(possibleMove))
-        self.bestScoreForOpp = max(scores)
-        maxIndex = scores.index(self.bestScoreForCur)
-        self.bestMoveForOpp = self.possibleMovesNow[maxIndex]
+                move_w = self.HastTable_w.get(possibleMove)
+                scores.append(move_w)
+                #print("opp move_w: ", possibleMove, move_w)
+        #self.bestScoreForOpp = max(scores)
+        #maxIndex = scores.index(self.bestScoreForCur)
+        #self.bestMoveForOpp = self.possibleMovesNow[maxIndex]
+        index = 0
+        for item in scores:
+            if item == True:
+                self.bestMoveForCur = self.possibleMovesForOpp[index]
+                break
+            index += 1
 
     def getPredictWinner(self):
         if self.bestScoreForOpp > self.bestScoreForCur:
@@ -86,9 +116,10 @@ class AlphaBetaForGo:
 
     def searcher(self, alpha, beta, depthLeft):
         bestScore = -np.Inf
-        if depthLeft == 0:
-            return self.statEvaluate()
         self.possibleMovesNow = GoBoardUtil.generate_legal_moves(self.currentBoard, self.currentColor)
+        if depthLeft == 0 or len(self.possibleMovesNow) == 0:
+            return self.statEvaluate()
+        print("Searcher self.possibleMovesNow", self.possibleMovesNow)
         for move in self.possibleMovesNow:
             """
             try:
