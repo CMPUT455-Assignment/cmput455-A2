@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="488ea38e-5f39-469d-a222-d674f6bf90a2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/a2_public_easy_s.gtp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/a2_public_easy_s.gtp.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/a2_public_easy_s.gtp.out.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AlphaBeta.py" beforeDir="false" afterPath="$PROJECT_DIR$/AlphaBeta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/a2_public_easy.gtp.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/a2_public_easy.gtp.out.html" beforeDir="false" afterPath="$PROJECT_DIR$/a2_public_easy.gtp.out.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a2_public_easy.gtp.out.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/board.py" beforeDir="false" afterPath="$PROJECT_DIR$/board.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gtp_connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/gtp_connection.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/summary.dat" beforeDir="false" afterPath="$PROJECT_DIR$/summary.dat" afterDir="false" />
@@ -42,7 +45,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+    "last_opened_file_path": "/Users/den/Desktop/CMPUT 455 - A2/cmput455-A2/References",
+    "settings.editor.selected.configurable": "preferences.fileTypes"
   }
 }]]></component>
   <component name="PyConsoleOptionsProvider">
@@ -53,6 +57,9 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/References" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -120,7 +127,8 @@
       <workItem from="1665120873411" duration="612000" />
       <workItem from="1665121567773" duration="990000" />
       <workItem from="1665179278214" duration="7088000" />
-      <workItem from="1665257194547" duration="4314000" />
+      <workItem from="1665257194547" duration="5354000" />
+      <workItem from="1665265302459" duration="10689000" />
     </task>
     <servers />
   </component>
@@ -142,7 +150,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/cmput455_A2$Go0.coverage" NAME="Go0 Coverage Results" MODIFIED="1665261118439" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/cmput455_A2$Go0.coverage" NAME="Go0 Coverage Results" MODIFIED="1665269249092" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/cmput455_A2$AlphaBeta.coverage" NAME="AlphaBeta Coverage Results" MODIFIED="1665183418754" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

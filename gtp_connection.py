@@ -79,8 +79,7 @@ class GtpConnection:
             "play": (2, "Usage: play {b,w} MOVE"),
             "legal_moves": (1, "Usage: legal_moves {w,b}"),
         }
-        self.solver_b = AlphaBetaForGo()
-        self.solver_w = AlphaBetaForGo()
+        self.searchEngr = AlphaBetaForGo()
         self.timelimit = 1
 
     def write(self, data: str) -> None:
@@ -373,24 +372,33 @@ class GtpConnection:
             else:
                 self.respond("Illegal move: {}".format(move_as_string))
 
-    def solve_cmd(self, args) -> str:
-        DEPTH = 5
+    def solve_cmd(self, args):
+        DEPTH = 10
         start = time.process_time()
 
+        boardFake = self.board.copy()
+        self.searchEngr.re(boardFake, self.board.current_player)
+        self.searchEngr.run(depthLeft=DEPTH)
+
+        winnerData = self.searchEngr.getPredictWinner()
+        winner = winnerData[0]
+        winnerMove = winnerData[1]
+
+        """
         if self.board.current_player == 1:
-            boardFake_b = self.board.copy()
-            self.solver_b.re(board=boardFake_b,
-                             color=self.board.current_player,
-                             possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
+
             bestMove_b = self.solver_b.run(depthLeft=DEPTH)
             bestScore_b = self.solver_b.getMaxScore()
+            print("bestScore_b: ", bestScore_b)
             board_for_w = self.solver_b.getPredictBoard()
 
+            board_for_w.current_player = 2
             self.solver_w.re(board=board_for_w,
-                             color=self.board.current_player,
+                             color=2,
                              possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
             bestMove_w = self.solver_w.run(depthLeft=DEPTH)
             bestScore_w = self.solver_w.getMaxScore()
+            print("bestScore_w: ", bestScore_w)
         else:
             boardFake_w = self.board.copy()
             self.solver_w.re(board=boardFake_w,
@@ -398,14 +406,17 @@ class GtpConnection:
                              possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
             bestMove_w = self.solver_w.run(depthLeft=DEPTH)
             bestScore_w = self.solver_w.getMaxScore()
+            print("bestScore_w: ", bestScore_w)
+
             board_for_b = self.solver_w.getPredictBoard()
 
+            board_for_b.current_player = 1
             self.solver_b.re(board=board_for_b,
-                             color=self.board.current_player,
+                             color=1,
                              possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
             bestMove_b = self.solver_b.run(depthLeft=DEPTH)
             bestScore_b = self.solver_b.getMaxScore()
-
+            print("bestScore_b: ", bestScore_b)"""
         timeUsed = time.process_time() - start
 
         # after search best move

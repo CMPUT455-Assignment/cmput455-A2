@@ -1,0 +1,168 @@
+<html>
+<head>
+<title>Output: a2_public_easy_s.gtp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="gogui-regress 1.5.1 (http://gogui.sf.net)">
+<style type="text/css">
+<!--
+body { margin:0; }
+span.comment { color:#999999; }
+span.fail { font-weight:bold; color:#ff5454; }
+span.error { font-weight:bold; color:#ffa954; }
+span.stderr { color:#666666; }
+span.invalid { background:#ff5454;}
+span.pass { font-weight:bold; color:#5eaf5e; }
+span.test { font-weight:bold; }
+-->
+</style>
+</head>
+<body bgcolor="white" text="black" link="#0000ee" vlink="#551a8b">
+<table border="0" width="100%" bgcolor="#91aee8" border="0">
+<tr><td>
+<h1>Output: a2_public_easy_s.gtp</h1>
+</td></tr>
+</table>
+<table width="100%" bgcolor="#e0e0e0">
+<tr><th align="left">Date:</th><td>October 8, 2022 4:54:49 PM MDT</td></tr>
+<tr><th align="left">Host:</th><td>Macintosh.local</td></tr>
+<tr><th align="left" valign="top">Command:</th>
+<td valign="top"><tt>python3 Go0.py</tt></td></tr>
+</table>
+<pre style="margin:1em">
+name
+= Go0
+
+version
+= 1.0
+
+cputime
+? Unknown command
+
+</pre>
+<hr style="margin:1em" size="1">
+<pre style="margin:1em">
+<span class="command">boardsize 4
+</span>= 
+
+<span class="command">clear_board
+</span>= 
+
+<span class="command">showboard
+</span>= 
+[[0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]]
+
+<span class="command">play b a4
+</span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]
+ [0 0 0 0]]
+
+<span class="command">play w a2
+</span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [2 0 0 0]
+ [0 0 0 0]]
+
+<span class="command">play b b1
+</span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 0 0 0]
+ [2 0 0 0]
+ [0 1 0 0]]
+
+<span class="command">play w b3
+</span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 2 0 0]
+ [2 0 0 0]
+ [0 1 0 0]]
+
+<span class="command">play b c2
+</span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 2 0 0]
+ [2 0 1 0]
+ [0 1 0 0]]
+
+<span class="command">play w d1
+</span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 2 0 0]
+ [2 0 1 0]
+ [0 1 0 2]]
+
+<span class="command">play b d3
+</span>= 
+
+<span class="command">showboard
+</span>= 
+[[1 0 0 0]
+ [0 2 0 1]
+ [2 0 1 0]
+ [0 1 0 2]]
+
+<span class="test"><a name="10">10 solve
+</a></span><span class="invalid">Invalid response: &gt;&gt; Current Player: 1
+Invalid response: &gt;&gt; Current HASH {6: -inf, 8: -inf, 12: -inf, 14: -inf, 16: -inf, 18: -inf, 22: -inf, 23: -inf, 24: -inf}
+Invalid response: a1
+Invalid response: c1
+Invalid response: b2
+Invalid response: d2
+Invalid response: a3
+Invalid response: c3
+Invalid response: b4
+Invalid response: c4
+Invalid response: d4
+Invalid response: bestScore_w:  -inf
+Invalid response: &gt;&gt; Current Player: 2
+Invalid response: &gt;&gt; Current HASH {6: -inf, 8: -inf, 12: -inf, 14: -inf, 16: -inf, 18: -inf, 22: -inf, 23: -inf, 24: -inf}
+Invalid response: a1
+Invalid response: c1
+Invalid response: b2
+Invalid response: d2
+Invalid response: a3
+Invalid response: c3
+Invalid response: b4
+Invalid response: c4
+Invalid response: d4
+Invalid response: bestScore_b:  -inf
+</span><span class="test">#?[w d4|w c4]
+</span><span class="fail">= w a1
+
+</span></pre>
+<hr style="margin:1em" size="1">
+<pre style="margin:1em">
+</span>cputime
+? Unknown command
+
+quit
+= 
+
+</pre>
+<hr style="margin-bottom:0" size="1">
+<p style="margin-top:1; margin-right:5" align="right"><i><small>Generated on 10/8/22 4:54 PM by gogui-regress 1.5.1 (<a href="http://gogui.sf.net">http://gogui.sf.net</a>)</small></i></p>
+</body>
+</html>

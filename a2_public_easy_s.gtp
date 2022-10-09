@@ -1,0 +1,19 @@
+boardsize 4
+clear_board
+showboard
+play b a4
+showboard
+play w a2
+showboard
+play b b1
+showboard
+play w b3
+showboard
+play b c2
+showboard
+play w d1
+showboard
+play b d3
+showboard
+10 solve
+#?[w d4|w c4]

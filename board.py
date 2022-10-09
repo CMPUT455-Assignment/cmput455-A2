@@ -197,7 +197,6 @@ class GoBoard(object):
         """
         
         assert is_black_white(color)
-        
         if self.board[point] != EMPTY:
             return False
             
