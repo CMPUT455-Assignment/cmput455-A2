@@ -43,13 +43,15 @@ class AlphaBetaForGo:
                 scores.append(self.HastTable_b.get(possibleMove))
             else:
                 scores.append(self.HastTable_w.get(possibleMove))
+        print("w", self.HastTable_w)
+        print("b", self.HastTable_b)
         self.bestScoreForCur = max(scores)
         maxIndex = scores.index(self.bestScoreForCur)
         self.bestMoveForCur = self.possibleMovesNow[maxIndex]
 
     def run_opp(self, depthLeft=5):
         self.currentBoard = self.currentBoard2
-        self.currentBoard[self.bestMoveForCur] = self.inputColor
+        self.currentBoard.play_move(self.bestMoveForCur, self.inputColor)
 
         self.searcher(alpha=-np.Inf, beta=np.Inf, depthLeft=depthLeft)
         scores = []
@@ -94,9 +96,9 @@ class AlphaBetaForGo:
                 assert score is not None
             except AssertionError:"""
             self.currentColor = board_base.opponent(self.currentColor)
-            self.currentBoard[move] = self.currentColor
+            self.currentBoard.play_move(move, self.currentColor)
             score = not self.searcher(-beta, -alpha, depthLeft - 1)
-            self.currentBoard[move] = EMPTY
+            self.currentBoard = self.inputBoard
             #self.current_player = self.inputColor
             if score >= beta:
                 return score

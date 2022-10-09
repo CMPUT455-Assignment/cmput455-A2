@@ -195,7 +195,6 @@ class GoBoard(object):
         Play a move of color on point
         Returns whether move was legal
         """
-        
         assert is_black_white(color)
         if self.board[point] != EMPTY:
             return False
