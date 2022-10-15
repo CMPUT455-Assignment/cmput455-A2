@@ -8,15 +8,15 @@ Parts of this code were originally based on the gtp module
 in the Deep-Go project by Isaac Henrion and Amos Storkey
 at the University of Edinburgh.
 """
+import imp
+import random
 import traceback
-from urllib import response
 import numpy as np
+import time
 import re
 from sys import stdin, stdout, stderr
 from typing import Any, Callable, Dict, List, Tuple
-from AlphaBeta import AlphaBetaForGo
-import time
-
+from ttable import TranspositionTable
 from board_base import (
     is_black_white,
     BLACK,
@@ -31,7 +31,7 @@ from board_base import (
 from board import GoBoard
 from board_util import GoBoardUtil
 from engine import GoEngine
-
+from zobristHash import ZobristHash
 
 class GtpConnection:
     def __init__(self, go_engine: GoEngine, board: GoBoard, debug_mode: bool = False) -> None:
@@ -48,6 +48,8 @@ class GtpConnection:
         self._debug_mode: bool = debug_mode
         self.go_engine = go_engine
         self.board: GoBoard = board
+        self.zobHash = ZobristHash(self.board.size)
+        # self.zobTable = [[[random.randint(1,2**64 - 1) for i in range(100)]for j in range(self.board.size)]for k in range(self.board.size)]
         self.commands: Dict[str, Callable[[List[str]], None]] = {
             "protocol_version": self.protocol_version_cmd,
             "quit": self.quit_cmd,
@@ -65,6 +67,7 @@ class GtpConnection:
             "gogui-rules_legal_moves": self.gogui_rules_legal_moves_cmd,
             "gogui-rules_final_result": self.gogui_rules_final_result_cmd,
             "solve": self.solve_cmd,
+            # new cmd
             "timelimit": self.timelimit_cmd
         }
 
@@ -79,8 +82,6 @@ class GtpConnection:
             "play": (2, "Usage: play {b,w} MOVE"),
             "legal_moves": (1, "Usage: legal_moves {w,b}"),
         }
-        self.searchEngr = AlphaBetaForGo()
-        self.timelimit = 1
 
     def write(self, data: str) -> None:
         stdout.write(data)
@@ -215,7 +216,9 @@ class GtpConnection:
     def list_commands_cmd(self, args: List[str]) -> None:
         """ list all supported GTP commands """
         self.respond(" ".join(list(self.commands.keys())))
-
+        
+        
+        
     def legal_moves_cmd(self, args: List[str]) -> None:
         """
         List legal moves for color args[0] in {'b','w'}
@@ -229,7 +232,9 @@ class GtpConnection:
             gtp_moves.append(format_point(coords))
         sorted_moves = " ".join(sorted(gtp_moves))
         self.respond(sorted_moves)
-
+        
+        
+        
     """
     ==========================================================================
     Assignment 2 - game-specific commands start here
@@ -240,6 +245,8 @@ class GtpConnection:
     Assignment 2 - commands we already implemented for you
     ==========================================================================
     """
+        
+        
 
     def gogui_analyze_cmd(self, args):
         """ We already implemented this function for Assignment 2 """
@@ -268,10 +275,10 @@ class GtpConnection:
         """ We already implemented this function for Assignment 2 """
         size = self.board.size
         str = ''
-        for row in range(size - 1, -1, -1):
+        for row in range(size-1, -1, -1):
             start = self.board.row_start(row + 1)
             for i in range(size):
-                # str += '.'
+                #str += '.'
                 point = self.board.board[start + i]
                 if point == BLACK:
                     str += 'X'
@@ -283,23 +290,36 @@ class GtpConnection:
                     assert False
             str += '\n'
         self.respond(str)
-
+        
+        
+    
     def gogui_rules_legal_moves_cmd(self, args):
         # get all the legal moves
         legal_moves = GoBoardUtil.generate_legal_moves(self.board, self.board.current_player)
         coords = [point_to_coord(move, self.board.size) for move in legal_moves]
         # convert to point strings
-        point_strs = [chr(ord('a') + col - 1) + str(row) for row, col in coords]
+        point_strs  = [ chr(ord('a') + col - 1) + str(row) for row, col in coords]
         point_strs.sort()
         point_strs = ' '.join(point_strs).upper()
         self.respond(point_strs)
         return
+        
+
 
     """
     ==========================================================================
     Assignment 2 - game-specific commands you have to implement or modify
     ==========================================================================
     """
+    # finished
+    def timelimit_cmd(self, args):
+        timelimit = int(args[0])
+        if (timelimit >= 1 and timelimit <= 100):
+            self.timelimit = timelimit
+            self.respond()
+        else:
+            self.respond("Illegal timelimit")
+
 
     def gogui_rules_final_result_cmd(self, args):
         """ Implement this method correctly """
@@ -310,16 +330,20 @@ class GtpConnection:
             self.respond('white')
         else:
             self.respond('black')
-
+            
+    # finished
     def play_cmd(self, args: List[str]) -> None:
         """
         play a move args[1] for given color args[0] in {'b','w'}
         """
-        # change this method to use your solver
         try:
-            board_color = args[0].lower()
-            board_move = args[1]
+            board_color = args[0].lower()    
+            board_move = args[1].lower()
             color = color_to_int(board_color)
+
+            if board_move == "pass" or (board_color != 'w' and board_color != 'b'):
+                self.respond("illegal move: \"{}".format(board_color) + " {}\" wrong color".format(board_move))
+                return
 
             coord = move_to_coord(args[1], self.board.size)
             if coord:
@@ -341,116 +365,143 @@ class GtpConnection:
             self.respond()
         except Exception as e:
             self.respond("Error: {}".format(str(e)))
-
+            
+    
+    # finished
     def genmove_cmd(self, args: List[str]) -> None:
         """ generate a move for color args[0] in {'b','w'} """
         # change this method to use your solver
         board_color = args[0].lower()
         color = color_to_int(board_color)
-        # TODO: get best move from solver and use play_cmd play move 
-        # get best move from solver
-        best_move = self.solve_cmd(color)
-
-        # Not solve in time limit play random move
-        if best_move[1] is None:
-            move = self.go_engine.get_move(self.board, color)
-            move_coord = point_to_coord(move, self.board.size)
-            move_as_string = format_point(move_coord)
-            if self.board.is_legal(move, color):
-                self.board.play_move(move, color)
-                self.respond(move_as_string)
+        move = self.go_engine.get_move(self.board, color)
+        if move is None:
+            self.respond('resign')
             return
 
-        # if toPlay is losing play random move
-        if best_move[0] != board_color:
-            move = self.go_engine.get_move(self.board, color)
-            move_coord = point_to_coord(move, self.board.size)
-            move_as_string = format_point(move_coord)
-            if self.board.is_legal(move, color):
-                self.board.play_move(move, color)
-                self.respond(move_as_string)
-            else:
-                self.respond("Illegal move: {}".format(move_as_string))
+        result = self.solve_cmd("")
+        if result[1] != "":
+            if result[0] == "w" or result[0] == "b":
+                move = result[1]
 
-    def solve_cmd(self, args):
-        DEPTH = 10
-        start = time.process_time()
-
-        boardFake = self.board.copy()
-        self.searchEngr.re(boardFake, self.board.current_player)
-        self.searchEngr.run(depthLeft=DEPTH)
-
-        winnerData = self.searchEngr.getPredictWinner()
-        winner = winnerData[0]
-        winnerMove = winnerData[1]
-
-        """
-        if self.board.current_player == 1:
-
-            bestMove_b = self.solver_b.run(depthLeft=DEPTH)
-            bestScore_b = self.solver_b.getMaxScore()
-            print("bestScore_b: ", bestScore_b)
-            board_for_w = self.solver_b.getPredictBoard()
-
-            board_for_w.current_player = 2
-            self.solver_w.re(board=board_for_w,
-                             color=2,
-                             possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
-            bestMove_w = self.solver_w.run(depthLeft=DEPTH)
-            bestScore_w = self.solver_w.getMaxScore()
-            print("bestScore_w: ", bestScore_w)
+        move_coord = point_to_coord(move, self.board.size)
+        move_as_string = format_point(move_coord)
+        if self.board.is_legal(move, color):
+            self.board.play_move(move, color)
+            self.respond(move_as_string)
         else:
-            boardFake_w = self.board.copy()
-            self.solver_w.re(board=boardFake_w,
-                             color=self.board.current_player,
-                             possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
-            bestMove_w = self.solver_w.run(depthLeft=DEPTH)
-            bestScore_w = self.solver_w.getMaxScore()
-            print("bestScore_w: ", bestScore_w)
+            self.respond("resign")
 
-            board_for_b = self.solver_w.getPredictBoard()
+    # finished
+    def solve(self, board_copy, color, moves_result):
+        return self.negamax([board_copy, color, moves_result,TranspositionTable()])
 
-            board_for_b.current_player = 1
-            self.solver_b.re(board=board_for_b,
-                             color=1,
-                             possibleMoves=GoBoardUtil.generate_legal_moves(self.board, self.board.current_player))
-            bestMove_b = self.solver_b.run(depthLeft=DEPTH)
-            bestScore_b = self.solver_b.getMaxScore()
-            print("bestScore_b: ", bestScore_b)"""
-        timeUsed = time.process_time() - start
 
-        # after search best move
-        if timeUsed > self.timelimit:
-             self.respond('unknown')
-        elif timeUsed <= self.timelimit:
-            if "z" in format_point(divmod(bestMove_w, self.board.size + 1)).lower():
-                self.respond('resign')
-            if self.board.current_player == 1:
-                if bestScore_b >= bestScore_w:
-                    self.respond(f'b {format_point(divmod(bestMove_b, self.board.size + 1)).lower()}')
-                else:
-                    self.respond('w')
-            if self.board.current_player == 2:
-                if bestScore_w >= bestScore_b:
-                    self.respond(f'w {format_point(divmod(bestMove_w, self.board.size + 1)).lower()}')
-                else:
-                    self.respond('b')
+    def hash(self, state):
+        hashcode = 0
+        board_lenth = len(state.board)
+        for i in range(board_lenth):
+            hashcode = state.board[i] + len(state.board) * hashcode
+        return hashcode
 
-    def timelimit_cmd(self, args):
-        # get the time limit if out of range set as default
-        self.timelimit = 1
-        timelimit = int(args[0])
-        # print('timelimit')
-        if 1 <= timelimit <= 100:
-            self.timelimit = timelimit
-        self.respond('')
+    # useless now
+    def zobristHash(self, state):
+        # h = 0
+        # for i in range(2, self.board.size):
+        #     for j in range(2, self.board.size):
+        #    # print board[i][j]
+        #         if self.board.pt(i,j):
+        #             piece = self.board.pt(i,j)
+        #             h ^= self.zobTable[i][j][piece]
+        # return h
+        hashCode = self.zobristArray[0][state.board[0]]
+        for i in range(1,self.boardIndices):
+            hashCode = hashCode ^ self.zobristArray[i][state.board[i]]
+        
+        return hashCode
+
+    def negamax(self, args):
+        state, color, win_moves, ttable = args[0], args[1], args[2], args[3]
+
+        hashcode = self.hash(state)
+        # may pass medium testcase with other efficient hash method
+        # state_hash_code = self.zobristHash(state)
+        # state_hash_code = self.zobHash.hash(state)
+
+        # current_legal_moves = GoBoardUtil.generate_legal_moves(state, color)
+        # opponent_legal_moves = GoBoardUtil.generate_legal_moves(state, opponent(color))
+
+        search_result = ttable.lookup(hashcode)
+        if search_result:
+            return search_result
+
+        if time.process_time() > self.end_time:
+            raise Exception()
+
+        current_legal_moves = GoBoardUtil.generate_legal_moves(state, color)
+        opponent_legal_moves = GoBoardUtil.generate_legal_moves(state, opponent(color))
+        if len(current_legal_moves) == 0:
+            ttable.store(hashcode, False)
+            return False
+        if len(opponent_legal_moves) == 0:
+            ttable.store(hashcode, True)
+            return True
+
+        for move in current_legal_moves:
+            # store previous step
+            last_move = state.last_move
+            last2_move = state.last2_move
+            can_play = state.play_move(move, color)
+            if not can_play:
+                continue
+            try:
+                success = not self.negamax([state, opponent(color), win_moves, ttable])
+            except Exception:
+                return "unknown", None
+            state.board[move] = EMPTY
+            # undo
+            state.last_move = last_move
+            state.last2_move = last2_move
+            if success:
+                win_moves.append(move)
+                ttable.store(hashcode, True)
+                return True
+        ttable.store(hashcode, False)
+        return False
+
+            
+    # finished
+    def solve_cmd(self, args: List[str]) -> None:
+
+        self.end_time = time.process_time() + self.timelimit
+        current_player = self.board.current_player
+
+        # call to return negamax result
+        moves_result = []
+        solve_result = self.solve(self.board.copy(), current_player, moves_result)
+
+        if solve_result:
+            coord = point_to_coord(moves_result.pop(), self.board.size)
+            move = str(format_point(coord)).lower()
+            if current_player == 1:
+                self.respond("b " + move)
+            elif current_player == 2:
+                self.respond("w " + move)
+        elif solve_result != "unknown":
+            if current_player == 1:
+                self.respond("w")
+            elif current_player == 2:
+                self.respond("b")
+        else:
+            self.respond("unknown")
+
+
+
 
     """
     ==========================================================================
     Assignment 2 - game-specific commands end here
     ==========================================================================
     """
-
 
 def point_to_coord(point: GO_POINT, boardsize: int) -> Tuple[int, int]:
     """
@@ -483,8 +534,9 @@ def move_to_coord(point_str: str, board_size: int) -> Tuple[int, int]:
     if col_c < "i":
         col += 1
     row = int(s[1:])
-
+        
     return row, col
+
 
 
 def color_to_int(c: str) -> int:
