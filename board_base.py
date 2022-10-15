@@ -21,20 +21,18 @@ BORDER = GO_COLOR(3)
 def is_black_white(color: GO_COLOR) -> bool:
     return color == BLACK or color == WHITE
 
-
 def is_black_white_empty(color: GO_COLOR) -> bool:
     return color == BLACK or color == WHITE or color == EMPTY
 
-
 def opponent(color: GO_COLOR) -> GO_COLOR:
     return WHITE + BLACK - color
-
 
 """
 A GO_POINT is a point on a Go board.
 It is encoded as a 32-bit integer, using the numpy type.
 """
 GO_POINT = np.int32
+
 
 """
 Encoding of "not a real point", used as a marker
@@ -54,11 +52,8 @@ The number of array elements in a "padded 1D" representation
 of a size x size board.
 See the documentation under coord_to_point.
 """
-
-
 def board_array_size(size: int) -> int:
     return size * size + 3 * (size + 1)
-
 
 """
 where1d: Helper function for using np.where with 1-d arrays.
@@ -67,11 +62,8 @@ of elements that fulfill the condition.
 For 1-d arrays, this is of type Tuple[ndarray].
 The [0] indexing is needed to extract the ndarray result from the singleton tuple.
 """
-
-
 def where1d(condition: np.ndarray) -> np.ndarray:
     return np.where(condition)[0]
-
 
 def coord_to_point(row: int, col: int, board_size: int) -> GO_POINT:
     """
@@ -116,3 +108,4 @@ def coord_to_point(row: int, col: int, board_size: int) -> GO_POINT:
     assert col <= board_size
     NS = board_size + 1
     return GO_POINT(NS * row + col)
+

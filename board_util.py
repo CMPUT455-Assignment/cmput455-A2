@@ -9,7 +9,6 @@ from typing import List
 from board_base import GO_COLOR, GO_POINT
 from board import GoBoard
 
-
 class GoBoardUtil(object):
     @staticmethod
     def generate_legal_moves(board: GoBoard, color: GO_COLOR) -> List:
@@ -55,6 +54,8 @@ class GoBoardUtil(object):
             ) and board.is_legal(move, color)
             if legal:
                 return move
+        
+        
 
     @staticmethod
     def generate_random_moves(board: GoBoard, use_eye_filter: bool) -> List:
@@ -72,6 +73,7 @@ class GoBoardUtil(object):
             if legal:
                 moves.append(move)
         return moves
+        
 
     @staticmethod
     def get_twoD_board(go_board: GoBoard) -> np.ndarray:
