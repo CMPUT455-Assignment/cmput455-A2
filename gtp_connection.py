@@ -10,6 +10,7 @@ at the University of Edinburgh.
 """
 import imp
 import random
+import math
 import traceback
 import numpy as np
 import time
@@ -81,6 +82,7 @@ class GtpConnection:
             "genmove": (1, "Usage: genmove {w,b}"),
             "play": (2, "Usage: play {b,w} MOVE"),
             "legal_moves": (1, "Usage: legal_moves {w,b}"),
+            "timelimit": (1, "Usage: timelimit INT"),
         }
 
     def write(self, data: str) -> None:
@@ -419,6 +421,13 @@ class GtpConnection:
         
         return hashCode
 
+    def searchResult(self, ttable, hashcode):
+        return ttable.lookup(hashcode)
+    
+    def storeResult(self, ttable, hashcode, result):
+        ttable.store(hashcode, result)
+        return result
+
     def negamax(self, args):
         state, color, win_moves, ttable = args[0], args[1], args[2], args[3]
 
@@ -430,9 +439,10 @@ class GtpConnection:
         # current_legal_moves = GoBoardUtil.generate_legal_moves(state, color)
         # opponent_legal_moves = GoBoardUtil.generate_legal_moves(state, opponent(color))
 
-        search_result = ttable.lookup(hashcode)
-        if search_result:
-            return search_result
+        # search_result = ttable.lookup(hashcode)
+        # search_result  = self.searchResult(ttable, hashcode)
+        if self.searchResult(ttable, hashcode):
+            return True
 
         if time.process_time() > self.end_time:
             raise Exception()
@@ -440,33 +450,28 @@ class GtpConnection:
         current_legal_moves = GoBoardUtil.generate_legal_moves(state, color)
         opponent_legal_moves = GoBoardUtil.generate_legal_moves(state, opponent(color))
         if len(current_legal_moves) == 0:
-            ttable.store(hashcode, False)
-            return False
+            result = self.storeResult(ttable, hashcode, False)
+            return result
         if len(opponent_legal_moves) == 0:
-            ttable.store(hashcode, True)
-            return True
+            result = self.storeResult(ttable, hashcode, True)
+            return result
 
         for move in current_legal_moves:
-            # store previous step
-            last_move = state.last_move
-            last2_move = state.last2_move
-            can_play = state.play_move(move, color)
-            if not can_play:
+            last_move, opp_last_move= state.last_move, state.opp_last_move
+            played_move = state.play_move(move, color)
+            if not played_move:
                 continue
             try:
                 success = not self.negamax([state, opponent(color), win_moves, ttable])
             except Exception:
-                return "unknown", None
+                return "unknown"
             state.board[move] = EMPTY
-            # undo
-            state.last_move = last_move
-            state.last2_move = last2_move
+
+            state.last_move, state.opp_last_move = last_move, opp_last_move
             if success:
                 win_moves.append(move)
-                ttable.store(hashcode, True)
-                return True
-        ttable.store(hashcode, False)
-        return False
+                return self.storeResult(ttable, hashcode, True)
+        return self.storeResult(ttable, hashcode, False)
 
             
     # finished
@@ -478,6 +483,7 @@ class GtpConnection:
         # call to return negamax result
         moves_result = []
         solve_result = self.solve(self.board.copy(), current_player, moves_result)
+        solve_result == ''
 
         if solve_result:
             coord = point_to_coord(moves_result.pop(), self.board.size)

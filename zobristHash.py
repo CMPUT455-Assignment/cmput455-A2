@@ -7,7 +7,7 @@ class ZobristHash:
                       for i in range(self.index)]
 
     def hash(self, state):
-        print(state.board[0])
+        # print(state.board[0])
         code = self.array[0][state.board[0]]
         for i in range(1, self.index):
             code = code ^ self.array[i][state.board[i]]

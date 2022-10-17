@@ -59,7 +59,7 @@ class GoBoard(object):
         self.WE: int = 1
         # add last move
         self.last_move = None
-        self.last2_move = None
+        self.opp_last_move = None
         
         self.current_player: GO_COLOR = BLACK
         self.maxpoint: int = board_array_size(size)
